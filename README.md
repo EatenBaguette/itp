@@ -1,6 +1,6 @@
 # itp
  
-[ETHAN REAL WEBSITE] (https://www.google.com)
+[ETHAN REAL WEBSITE](https://www.google.com)
 
 **Woah crazy**
 <br>
