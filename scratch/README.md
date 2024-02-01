@@ -32,5 +32,10 @@ if go close to bear, drop berries?
 
 ##Implementation##
 ###Movement###
-- I used [https://scratch.mit.edu/projects/959988092/editor](this) demo scratch assignment to figure out the best way to get movement to happen.
+- I used [this](https://scratch.mit.edu/projects/959988092/editor) demo scratch assignment to figure out the best way to get movement to happen.
 - I realized the fox didn't have a walking sprite.
+
+
+###Level Design###
+- backdrops:
+- [Cave Tunnel](https://www.istockphoto.com/vector/dark-terrible-cave-game-illustration-background-gm1158457256-316452413)
