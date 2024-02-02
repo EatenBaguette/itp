@@ -67,7 +67,7 @@ if go close to bear, drop berries?
 - It still was saying many berries.
 - I made it drop the berry a random value away from the fox.
 - Now the issue is it makes a new clone every time a key is pressed while touching the bear. I need it to make a number of clones equal to how many berries are collected.
-- I nust realized its not setting the x and y of the clones, its moving the actual berry which I don't want.
+- I just realized its not setting the x and y of the clones, its moving the actual berry which I don't want.
   - f
 
 
