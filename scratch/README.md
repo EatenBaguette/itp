@@ -40,7 +40,7 @@ if go near cave, scared by bear? No, bear is deeper in cave.
 collect berries, make sound if collect berries.
 if go close to bear, drop berries?
 
-
+## Implementation
 ### Movement
 - I used [this](https://scratch.mit.edu/projects/959988092/editor) demo scratch assignment to figure out the best way to get movement to happen.
 - I realized the fox didn't have a walking sprite, so I made one with the feet swapped. After trying it, it didn't look good. I checked back to the demo and realied there were 4 sprites (I had forgotten the in between steps ones). I made 2 more sprites for the in between steps, then added two more blocks of move code to each arrow key and it looked pretty good.
