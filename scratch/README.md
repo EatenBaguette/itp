@@ -14,7 +14,7 @@ The documentation (again, always in Markdown as a .md file) must have the follow
 
 
 ## Pseudocode <br>
-  ###movement###
+  ### movement
 1. if left arrow pressed, turn left and move left.
 2. if right arrow pressed, turn right and move right.
 3. if up arrow or w pressed, move up.
