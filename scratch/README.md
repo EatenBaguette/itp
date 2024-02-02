@@ -25,7 +25,15 @@ The documentation (again, always in Markdown as a .md file) must have the follow
 
 <br>
 
-if go near cave, scared by bear
+###collection###
+1. if touch orange, collect it.
+  - create a counter.
+  - hide the orange.
+2. if hit by bear, drop oranges.
+  - using the counter to track how many oranges, create clone at or maybe move to positon of fox
+  - within fox, track the postion, send to each of the oranges?
+
+if go near cave, scared by bear? No, bear is deeper in cave.
 collect berries, make sound if collect berries.
 if go close to bear, drop berries?
 
@@ -33,7 +41,22 @@ if go close to bear, drop berries?
 ##Implementation##
 ###Movement###
 - I used [this](https://scratch.mit.edu/projects/959988092/editor) demo scratch assignment to figure out the best way to get movement to happen.
-- I realized the fox didn't have a walking sprite.
+- I realized the fox didn't have a walking sprite, so I made one with the feet swapped. After trying it, it didn't look good. I checked back to the demo and realied there were 4 sprites (I had forgotten the in between steps ones). I made 2 more sprites for the in between steps, then added two more blocks of move code to each arrow key and it looked pretty good.
+
+- I didn't like that the sprite kept moving so long after taking finger off of arrow key, so I lowered the distance moved and time delay between each sprite. This didn't work so I switched back. I'll live with it.
+
+- I want to make a boundary to stop the fox from going into the sky. At first I tried using another sprite and setting it so that when the fox was in contact with it, it moved y -20 (which is how much the fox can move vertically in one click of the arrow key). However, it seems like the engine creates hitboxes based on color, because when I set the color of the box to clear it didn't work.
+  - I then looked at the different code blocks and realized I could use the x and y position and create an absolute value function to set my boundary. I got out some pencil paper and planned the points I wanted to calculate the slope. Then I set the vertex. Once the function was written, I put it into the code blocks. It worked!
+- I also wanted to make a boundary stopping the fox from going onto a rock on the right. I had to use and x= absolute value function which I had some trouble with. I used pencil and paper and evnetually figured out I had to change the sign of the y value inside the absolute value. It worked. I then played with the slope and postion a little to fine tune it.
+- I wanted to make it look like the fox was getting bigger as it walked -y (to create perspective). I increased the size at points along the y axis.
+
+###Collection###
+- I set a public variable displaying the number of berries collected.
+- I made it increase anytime a key is touched and the fox is touching the berry.
+- It collected more than one because I didn't hide it so there were multiple collisions.
+- I made it get hidden when touched.
+- I needed a way to reset the count, so I made it so that clicking the flag resets the game. It shows all the berries, sets the berry count to zero, and sets the starting position and size of the fox.
+-
 
 
 ###Level Design###
