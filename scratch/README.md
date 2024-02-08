@@ -1,18 +1,6 @@
 # itp
 # Scratch Documentation
 
-The documentation (again, always in Markdown as a .md file) must have the following:
-- what you did
-- how you did it
-- the problems you faced (ABDYD: always be documenting your debugging!)
-- how you overcame them
-- what code you used from others/elsewhere
-- where to find that code (specific links!!!)
-- Other folks' GitHub public repositories and Stack OverFlow Links to an external site. are the best places to go for help most of the time
-- Correctly document all your debugging, especially if you code ultimately does not run as intended. I will take points off for code that does not run correctly, but will still give partial credit if it is well-documented.
-- For the purposes of this class, your documentation also helps you prepare to talk about your code in class with your colleagues.
-
-
 ## Pseudocode <br>
   ### movement
 1. if left arrow pressed, turn left and move left.
@@ -41,7 +29,8 @@ collect berries, make sound if collect berries.
 
 ### Level Design
 - When starting, the bear should be seen for a second entering the cave, dropping a berry near the entrance.
-- When entering the cave, the bear should be waiting at the end. It turns and keep going.
+- When entering the cave, the bear should be waiting at the end. It turns and keep going. This should only happen the first time.
+  - when enter tunnel, check game progress. If less than value, show bear scene. If greater than value, no bear scene. When bear performs scene, it updates the game progress.
 - when continuing through the cave, the bear is waiting. It stands up on its legs, then goes down. The cave rumbles. A red blink indicates where spikes are about to fall. Instructions will be given so the player knows to click space to change to sitting to take up less space and avoid the spikes.
 - being hit by a spike gets rid of 1 of 3 lives and causes the fox to drop its berries.
 
@@ -66,6 +55,7 @@ collect berries, make sound if collect berries.
   - shift isn't an option so I picked z. If z is pressed while an arrow key is pressed, it multiplies the movement speed by a variable called movement speed multiplier.
   - it doesn't work because it triggers all of the "when any key pressed" blocks.
   - I'll keep the multiplier for coding so I can move around faster but wait on implementing sprinting for players.
+- I fixed an issue where the fox kept the order of cycling costumes. I want it to reset every time the fox walks so that clicking space after walking always first makes the fox sit rather than lay. I added a set costume variable value to each arrow key.
 
 ### Collection
 - I set a public variable displaying the number of berries collected.
@@ -90,6 +80,7 @@ collect berries, make sound if collect berries.
   3. The third sets the count to 0, checks if it's hidden, then sets a random y and x position within a range of the fox (as if the fox dropped the berries), then shows it and sets hidden to 0.
 - now the issue is it moves every berry when touching the bear, even if it wasn't collected. I need to add a check.
 - I created a variable called Hidden for each berry. It sets to 1 when it is hidden. When touching the bear, it checks if the berry is hidden (meaning it was collected) before dropping it.
+- I duplicated the boundary of tunnel 1 to tunnel 2.
 
 
 ### Level Design
@@ -98,8 +89,7 @@ collect berries, make sound if collect berries.
 - I placed some berries leading towards the cave entrance.
 - I want to switch backdrops when the fox is close to the cave entrance.
 - Adding code based on position to the stage affects all backdrops, so I need to add a check for each backdrop. I checked to see if the backdrop is arctic before using the fox position to change to the cave tunnel.
-  - I should also add a time-out after switching backdrops so that it's less glitchy near the boundary.
-  - I added a transition. If in mountain, if the fox is close to the cave entrance, it fades the background and hides the fox, switches the background, moves the fox, shows the fox, and unfades the background.
+  - I added a transition. If in mountain, if the fox is close to the cave entrance, it fades the background and hides the fox, switches the background, moves the fox, shows the fox, and un-fades the background.
 - I added a cave stinger that plays when entering the cave.
 - I need to add a starting background when flag is clicked (Mountain).
 - I need to move the boundary code that doesn't let the fox move into the sky to each background, otherwise it exists in all backgrounds. I already have a variable for the fox's position. I need to figure out how to get the fox position to move out of the boundary when the code block isn't actually in the fox sprite. Probably sending a message.
@@ -108,4 +98,15 @@ collect berries, make sound if collect berries.
 - I realized I need to hide uncollected berries from other backgrounds.
   - I broadcast a message whenever switching to a new section. I received it and made it hide berries from other sections, and show berries for which hidden does not equal 1 (that means they were collected).
   - It's not working. I checked the hidden variable and it's 1 even when the berry is showing. I realized it wasn't working because I forgot to set the hidden variable to 0 on start. They were all considered hidden. Now it works.
-- For some reason clicking any button retriggers the switching to tunnel background. I'm gonna have to find a work around.
+- For some reason clicking any button re-triggers the switching to tunnel background. I'm gonna have to find a work around.
+  - The issue was that I had an extra else as part of a condition for the transitioning between backgrounds that caused the current background to re-trigger every key press. I fixed it by combining the conditions of each if with an and, and getting rid of the else.
+- There's an issue where switching quickly between backgrounds plays both audios.
+  - I added a stop all sounds just before each background audio is played.
+- I added a game progress variable so that certain "cutscenes" wouldn't re-trigger every time the fox enters a background.
+- I added a 2nd tunnel, and a bear cutscene where it slams down. I sequenced the bear using move and costume changes. When it slammed down, I made it rumble the screen.
+  - I added 2 backdrops called rumble and I offset them. I sent a signal to the backdrops that when they receive it, the backdrop switches quickly between the two rumble backdrops, making it wobble.
+- I designed a spike sprite with a highlit version and regular version.
+- I made the spikes flash while rumbling, then fall.
+- I added a life variable and sprites and set the sprites so that they are hidden at different stages of the life variable. When less than 3, the first is hidden.
+- I'm having trouble getting the spike to register as colliding with the fox if the fox isn't moving.
+  - I set it to repeat a certain number of times. Now it loses too much life. To solve this, I made a time period of invulnerability by recieving lose life, setting invulnerable to 1, waiting, then setting back to 0. To register and lose life, the spike has to both be touching the fox and invulnerable variable has to be 0. This worked.
