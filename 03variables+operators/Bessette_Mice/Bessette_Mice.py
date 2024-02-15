@@ -1,0 +1,1 @@
+print(f'\t\t{2+1}\n\t\t\tBlind\n\t\t\t\tMice')
