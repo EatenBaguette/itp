@@ -114,6 +114,7 @@ for i in range(1, 101, 1):
 2. Trying some pseudocode. First counter = 1. I need it to print unless certain conditions are true, then print something else. After some working I decided against this approach. I'll try to make an if for each possible condition.
 </br>
 3. The four possible conditions are that the number is evenly divisible by neither 3 or 5, both 3 and 5, 3 but not 5, and 5 but not 3. This code reflects that, and works.
+
 ```
 for i in range(1, 101, 1):
     if i % 3 != 0 and i % 5 != 0:
