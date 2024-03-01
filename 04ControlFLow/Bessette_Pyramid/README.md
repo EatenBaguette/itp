@@ -115,7 +115,7 @@ for i in range(1, 101, 1):
 </br>
 3. The four possible conditions are that the number is evenly divisible by neither 3 or 5, both 3 and 5, 3 but not 5, and 5 but not 3. This code reflects that, and works.
 
-```
+```python
 for i in range(1, 101, 1):
     if i % 3 != 0 and i % 5 != 0:
         print(i)
