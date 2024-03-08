@@ -53,6 +53,7 @@ def draw():
     triangle(-70, -70, -70, 70, 70, 70)
 ```
 I added rotation to test if it would work, and it did:
+
 ![rotate_test](img/01.png)
 
 
