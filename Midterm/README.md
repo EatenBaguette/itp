@@ -56,4 +56,18 @@ I added rotation to test if it would work, and it did:
 
 ![rotate_test](img/01.png)
 
+Now I can try some of what I made before to see if it works.
+```
+def drawUnit():
+    triangle(-70, -70, -70, 70, 70, 70)
+def draw():
+    translate(100, 100)
+    for i in range(24):
+        rotate(PI/12)
+        drawUnit()
+```
+It worked.
+
+![translated triangle](img/02.png)
+
 
