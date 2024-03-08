@@ -64,6 +64,9 @@ I added rotation to test if it would work, and it did:
 
 Now I can try some of what I made before to see if it works.
 ```
+def setup():
+    size(200, 200)
+    noFill()
 def drawUnit():
     triangle(-70, -70, -70, 70, 70, 70)
 def draw():
@@ -75,5 +78,16 @@ def draw():
 It worked.
 
 ![translated triangle](img/Phase2_02.png)
+
+I just realized I can do a lot by changing the drawUnit to make some interesting rotation art!
+```
+def drawUnit():
+    pushMatrix()
+    triangle(-70, -70, -70, 70, 70, 70)
+    quad(-30, -30, 0, -100, 60, 0, 20, -70)
+    rect(0, 0, 17, 23)
+```
+
+![added quad and rectangle](img/Phase2_03.png)
 
 
