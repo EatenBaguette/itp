@@ -2,7 +2,13 @@
 
 ## Phase 1
 
-I want to create a rotated triangle pattern. I made a 25 by 25 grid and added a square, drew a circle inside the square, then a triangle inside the circle starting at (x,y) = (4,4). Then I rotated it a bunch of times to create [insert image here]
+I want to create a rotated triangle pattern. I made a 25 by 25 grid and added a square, drew a circle inside the square, then a triangle inside the circle starting at (x,y) = (4,4). 
+
+![sketch_without_rotation](img/Phase1_01.png)
+
+Then I rotated it a bunch of times. I got lazy and stopped. Once I figure out the code, I'll let the computer finish it for me. You get the basic idea though.
+
+![sketch_with_rotation](img/Phase1_02.png)
 
 ## Phase 2
 
@@ -54,7 +60,7 @@ def draw():
 ```
 I added rotation to test if it would work, and it did:
 
-![rotate_test](img/01.png)
+![rotate_test](img/Phase2_01.png)
 
 Now I can try some of what I made before to see if it works.
 ```
@@ -68,6 +74,6 @@ def draw():
 ```
 It worked.
 
-![translated triangle](img/02.png)
+![translated triangle](img/Phase2_02.png)
 
 
