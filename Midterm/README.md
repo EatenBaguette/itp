@@ -232,3 +232,89 @@ def draw():
 ```
 
 
+After this I added some features. I added a variable `rotations` to define how many rotations of the shapes should happen for each object. I added `noLoop()` and `redraw()` on mouse click so that it only redraws when the mouse is clicked. This can be toggled by turning it into a comment with a hashtag. I also added some colorization features (greyscale). One colorizes it to a static sine wave to make an ombre effect. I altered the code I found on [this](https://github.com/rdwrome/261sp24/blob/main/06Lists/Processing/3.sinewave/sinewave.pyde) Github page to make it work. The other is random. The different options can be toggled by adding or removing a hashtag in front of them. 
+
+```python
+from random import random as r
+
+# how many pixels wide and tall should the square canvas be? Please enter a multiple of 100.
+canvasSize = 400
+
+# how many rows and columns will there be? 4 means a 4x4 grid.
+gridSize = 10
+
+# 1 means each object just touches. Set to between 0 and 1 to increase 
+# the space between each object. Set above 1 to overlap objects.
+scaleValue = 1 / float(gridSize)
+
+rotations = 24 # how many rotations before reaching 2PI radians.
+
+# calculates the pixel width/height of each cell of the grid.
+cellSize = canvasSize / float(gridSize)
+
+sine_wave = []
+      
+def setup():
+    size(canvasSize, canvasSize) # sets canvas size
+    noFill() # disables drawing fill
+    noLoop()
+    for i in range(canvasSize):
+        radian = map(i, 0, canvasSize, 0, PI/2)
+        sine_wave.append(abs(sin(radian)))
+
+def drawUnit():
+    triangle(-70, -70, -70, 70, 70, 70) # draws a triangle
+    
+    # Turn these off when tiling small because it gets too busy.
+    #quad(-30, -30, 0, -100, 60, 0, 20, -70) # draws a 4 sided shape
+    #rect(0, 0, 17, 23) # draws a square
+    
+def drawObject(x, y): # draws the object at a specified coordinate and scale.
+    push() # saves the current drawing position
+    translate(x + (100 * scaleValue * width / 200), y + (100 * scaleValue * width / 200)) # translates the origin.
+    scale(scaleValue * width / 200) # scale around origin.
+    for i in range(2 * rotations): # draws a unit, rotates around the origin, and repeats.
+        drawUnit()
+        rotate(PI/rotations)
+    pop() # returns the saved drawing position.
+    
+def draw(): # draws a tiled pattern.
+    for i in range(0,width):
+        
+        # Turn on for ombre pattern along x axis.
+        #stroke(sine_wave[i] * 255 + 10)
+        
+        # Turn on for random along x axis.
+        #stroke(r() * 255)
+        if i % cellSize == 0:
+            for j in range(height):
+                
+                # Turn on for random everywhere.
+                #stroke(r() * 255)
+                if j % cellSize == 0:
+                    drawObject(i,j)
+    
+def mousePressed():
+    redraw()
+```
+### Examples
+
+Overlapping random color 10x10 grid 24 rotations
+
+![overlapping random color 10x10 grid 24 rotations](img/Phase_4_01.png)
+
+Ombre color 10x10 grid 24 rotations
+
+![Ombre color 10x10 grid 24 rotations](img/Phase_4_02.png)
+
+Ombre color 10x10 grid 6 rotations
+
+![Ombre color 10x10 grid 6 rotations](img/Phase_4_03.png)
+
+Black Color 20x20 grid 20 rotations
+
+![Black Color 20x20 grid 20 rotations](img/Phase_4_04.png)
+
+
+
+
