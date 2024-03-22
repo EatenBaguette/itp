@@ -93,7 +93,9 @@ def drawUnit():
 I checked what would happen without pushMatrix(). The lines become blurrier for some reason, so I'll keep it for now.
 
 ## Phase 3
-I referenced the example for Phase 3 in the README at 
+I referenced the example for Phase 3 in the README [here on Github](https://github.com/rdwrome/261sp24/tree/main/07Midterm). Using the organization of the code, I kept the drawUnit function and made a new drawObject function with parameters x, y, and s. Following the example code, I pushed the matrix, set the translation, then the scale, then drew the shapes, then reset the matrix. The only issue I had was that I wanted to not let the shape go over the border, so I added a base translation of `100 * s` for x and y (because at a scale of 1, the origin needs to be at (100,100) to draw the shape without going over the border).
+
+I added descriptions for each line for easy interpretation.
 
 ```python
 def setup():
@@ -119,4 +121,6 @@ def draw():
    drawObject(0,0,2)
    drawObject(400,0,2)
 ```
+This is what the code currently draws:
+
 
