@@ -299,9 +299,9 @@ def mousePressed():
 ```
 ### Examples
 
-Overlapping random color 10x10 grid 24 rotations
+Overlapping (1.5) random color 10x10 grid 24 rotations
 
-![overlapping random color 10x10 grid 24 rotations](img/Phase_4_01.png)
+![overlapping (1.5) random color 10x10 grid 24 rotations](img/Phase_4_01.png)
 
 Ombre color 10x10 grid 24 rotations
 

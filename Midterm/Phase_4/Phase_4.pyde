@@ -8,7 +8,7 @@ gridSize = 10
 
 # 1 means each object just touches. Set to between 0 and 1 to increase 
 # the space between each object. Set above 1 to overlap objects.
-scaleValue = 1 / float(gridSize)
+scaleValue = 1.5 / float(gridSize)
 
 rotations = 24 # how many rotations before reaching 2PI radians.
 
@@ -45,7 +45,7 @@ def draw(): # draws a tiled pattern.
     for i in range(0,width):
         
         # Turn on for ombre pattern along x axis.
-        stroke(sine_wave[i] * 255 + 10)
+        #stroke(sine_wave[i] * 255 + 10)
         
         # Turn on for random along x axis.
         #stroke(r() * 255)
@@ -53,7 +53,7 @@ def draw(): # draws a tiled pattern.
             for j in range(height):
                 
                 # Turn on for random everywhere.
-                #stroke(r() * 255)
+                stroke(r() * 255)
                 if j % cellSize == 0:
                     drawObject(i,j)
     
