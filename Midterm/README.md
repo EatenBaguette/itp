@@ -6,7 +6,7 @@ I want to create a rotated triangle pattern. I made a 25 by 25 grid and added a 
 
 ![sketch_without_rotation](img/Phase1_01.png)
 
-Then I rotated it a bunch of times. I got lazy and stopped. Once I figure out the code, I'll let the computer finish it for me. You get the basic idea though.
+Then I rotated it a bunch of times. I got lazy and stopped. Once I figure out the code, I'll let the computer finish it for me. Hopefully you get the basic idea though.
 
 ![sketch_with_rotation](img/Phase1_02.png)
 
@@ -89,5 +89,11 @@ def drawUnit():
 ```
 
 ![added quad and rectangle](img/Phase2_03.png)
+
+I checked what would happen without pushMatrix(). The lines become blurrier for some reason, so I'll keep it for now.
+
+## Phase 3
+
+
 
 
