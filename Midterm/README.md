@@ -127,4 +127,108 @@ This is what the code currently draws:
 
 ## Phase 4
 
+Pseudocode:
+800x800px
+1x1 grid = 800x800
+5x5 grid = 160x160 cell size
+10x10 grid = 80x80 cell size
+Cell dimensions: (width/grid, height/grid)
+
+With 800x800:
+Scale is 4 for 1x1
+Scale is 2 for 2x2
+Scale is 1 for 4x4
+
+With 400x400:
+Scale is 2 for 1x1
+Scale is 1 for 2x2
+
+With 200x200
+Scale 1 is 1x1
+
+I want the scale to depend on the canvas size, but I don't want the canvas size to depend on the scale. I'll make a new variable called gridSize.
+
+I made gridsize, and since I want 1 to mean 1x1 and all other scale values to be between 0 and 1, I also made scaleValue equal 1 over gridSize. However, when I put a fraction into the scale function under draw Object, it doesn't work. I thought it might have to be a float, so I tried making scaleValue equal `float(1 / gridSize)` but it still didn't work. The canvas is just blank.
+
+```python
+gridSize = 2 # type 1 for 1x1 tiling, 2 for 2x2, etc.
+scaleValue = 1/gridSize
+
+def setup():
+    size(800,800) # sets canvas size
+    noFill() # disables drawing fill
+
+def drawUnit():
+    triangle(-70, -70, -70, 70, 70, 70) # draws a triangle
+    #quad(-30, -30, 0, -100, 60, 0, 20, -70) # draws a 4 sided shape
+    #rect(0, 0, 17, 23) # draws a square
+    #they are turned off because they make the shape too busy when small scaled.
+    
+def drawObject(x, y): # draws the object at a specified coordinate and scale.
+    push() # saves the current drawing position
+    translate(x + 100 * scaleValue * width / 200, y + 100 * scaleValue * width / 200) # translates the origin.
+    scale(scaleValue * width / 200) # scale around origin.
+    for i in range(24): # draws a unit, rotates around the origin, and repeats.
+        drawUnit()
+        rotate(PI/12)
+    pop() # returns the saved drawing position.
+    
+def draw():
+   #for i in range(width):
+       #for j in range(height):
+    drawObject(0, 0)
+```
+
+It works when scaleValue is not assigned a value using arithmetic. Maybe there's an issue with the number of decimals when doing arithmetic?
+
+I figured out that it doesn't like dividing by a variable but doesn't mind multiplying. Not what I need though.
+```python
+g = 4
+v = float(1/g)
+print('V equals', v)
+#It prints 0.0
+```
+I just had to change g to a float before diving by it. This works.
+```python
+g = 4
+v = 1 / float(g)
+print('V equals', v)
+```
+
+Now that this works, I need to make it tile. I thought about how I would do nested for loops for about 10 minutes without touching the computer. Then I made a new variable called cellSize which takes the canvas size and divides by the grade size to get the number of pixels per grid section. In the `draw()` function, I first set up a for loop for width, with a nested for loop for height. Then I thought to put an if before running the height for loop. It checks for if the index, which would be equal to the x coordinate, is divisible by the cellSize. That way it only runs the height loop if it is on a space where an object should be printed. Then, it runs the height for loop. It checks if the index is divisible by the cell size again, and prints the object if it is. I tried it and it worked the first time! 
+
+```python
+canvasSize = 800
+gridSize = 20
+scaleValue = 1 / float(gridSize)
+cellSize = canvasSize/ float(gridSize)
+      
+      
+def setup():
+    size(canvasSize, canvasSize) # sets canvas size
+    noFill() # disables drawing fill
+
+def drawUnit():
+    triangle(-70, -70, -70, 70, 70, 70) # draws a triangle
+    #quad(-30, -30, 0, -100, 60, 0, 20, -70) # draws a 4 sided shape
+    #rect(0, 0, 17, 23) # draws a square
+    #they are turned off because they make the shape too busy when small scaled.
+    
+def drawObject(x, y): # draws the object at a specified coordinate and scale.
+    push() # saves the current drawing position
+    translate(x + (100 * scaleValue * width / 200), y + (100 * scaleValue * width / 200)) # translates the origin.
+    scale(scaleValue * width / 200) # scale around origin.
+    for i in range(24): # draws a unit, rotates around the origin, and repeats.
+        drawUnit()
+        rotate(PI/12)
+    pop() # returns the saved drawing position.
+    
+def draw():
+    for i in range(0,width):
+        if i % cellSize == 0:
+            for j in range(height):
+                if j % cellSize == 0:
+                    drawObject(i,j)
+```
+
 
