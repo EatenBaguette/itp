@@ -315,6 +315,12 @@ Black Color 20x20 grid 20 rotations
 
 ![Black Color 20x20 grid 20 rotations](img/Phase_4_04.png)
 
+Black Color 20x20 grid 24 rotations with many repetitions
+
+![Black Color 20x20 grid 24 rotations with many repetitions](img/Phase_4_05.png)
+
+
+
 
 
 
