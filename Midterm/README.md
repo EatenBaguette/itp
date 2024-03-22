@@ -123,4 +123,5 @@ def draw():
 ```
 This is what the code currently draws:
 
+![two side by side](img/Phase3_01.png)
 
