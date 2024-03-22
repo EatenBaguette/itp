@@ -1,16 +1,16 @@
 from random import random as r
 
 # how many pixels wide and tall should the square canvas be? Please enter a multiple of 100.
-canvasSize = 400
+canvasSize = 800
 
 # how many rows and columns will there be? 4 means a 4x4 grid.
 gridSize = 10
 
 # 1 means each object just touches. Set to between 0 and 1 to increase 
 # the space between each object. Set above 1 to overlap objects.
-scaleValue = 1.5 / float(gridSize)
+scaleValue = 1 / float(gridSize)
 
-rotations = 24 # how many rotations before reaching 2PI radians.
+rotations = 16 # how many rotations before reaching 2PI radians.
 
 # calculates the pixel width/height of each cell of the grid.
 cellSize = canvasSize / float(gridSize)
@@ -20,7 +20,7 @@ sine_wave = []
 def setup():
     size(canvasSize, canvasSize) # sets canvas size
     noFill() # disables drawing fill
-    #noLoop()
+    noLoop()
     for i in range(canvasSize):
         radian = map(i, 0, canvasSize, 0, PI/2)
         sine_wave.append(abs(sin(radian)))
@@ -53,7 +53,7 @@ def draw(): # draws a tiled pattern.
             for j in range(height):
                 
                 # Turn on for random everywhere.
-                stroke(r() * 255)
+                #stroke(r() * 255)
                 if j % cellSize == 0:
                     drawObject(i,j)
     
