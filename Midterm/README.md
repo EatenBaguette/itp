@@ -195,7 +195,7 @@ v = 1 / float(g)
 print('V equals', v)
 ```
 
-Now that this works, I need to make it tile. I thought about how I would do nested for loops for about 10 minutes without touching the computer. Then I made a new variable called cellSize which takes the canvas size and divides by the grade size to get the number of pixels per grid section. In the `draw()` function, I first set up a for loop for width, with a nested for loop for height. Then I thought to put an if before running the height for loop. It checks for if the index, which would be equal to the x coordinate, is divisible by the cellSize. That way it only runs the height loop if it is on a space where an object should be printed. Then, it runs the height for loop. It checks if the index is divisible by the cell size again, and prints the object if it is. I tried it and it worked the first time! 
+Now that this works, I need to make it tile. I made a new variable called cellSize which takes the canvas size and divides by the grid size to get the number of pixels per grid section. In the `draw()` function, I first set up a for loop for width, with a nested for loop for height. Then I thought to put an if before running the height for loop. It checks for if the index, which would be equal to the x coordinate, is divisible by the cellSize. That way it only runs the height loop if it is on a space where an object should be printed. Then, it runs the height for loop. It checks if the index is divisible by the cell size again, and prints the object if it is. I tried it and it worked the first time! 
 
 ```python
 canvasSize = 800
