@@ -324,3 +324,28 @@ Black Color 20x20 grid 24 rotations with many repetitions
 
 
 
+# Extra bugs
+
+I just noticed a bug with multiples of 3 that I fixed by changing 
+```python
+if i % cellSize == 0:
+            for j in range(height):
+                
+                # Turn on for random everywhere.
+                #stroke(r() * 255)
+                if j % cellSize == 0:
+                    drawObject(i,j)
+```
+
+to
+```python
+if i % cellSize == 0:
+            for int(j in range(height)):
+                
+                # Turn on for random everywhere.
+                #stroke(r() * 255)
+                if int(j % cellSize) == 0:
+                    drawObject(i,j)
+```
+
+Changing the if to integers fixed the problem.
