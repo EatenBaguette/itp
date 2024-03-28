@@ -34,27 +34,27 @@ def drawUnit():
     
 def drawObject(x, y): # draws the object at a specified coordinate and scale.
     push() # saves the current drawing position
-    translate(x + (100 * scaleValue * width / 200), y + (100 * scaleValue * width / 200)) # translates the origin.
-    scale(scaleValue * width / 200) # scale around origin.
+    translate(x + (100 * scaleValue * canvasSize / 200), y + (100 * scaleValue * canvasSize / 200)) # translates the origin.
+    scale(scaleValue * canvasSize / 200) # scale around origin.
     for i in range(2 * rotations): # draws a unit, rotates around the origin, and repeats.
         drawUnit()
         rotate(PI/rotations)
     pop() # returns the saved drawing position.
     
 def draw(): # draws a tiled pattern.
-    for i in range(0,width):
+    for i in range(0,canvasSize):
         
         # Turn on for ombre pattern along x axis.
         #stroke(sine_wave[i] * 255 + 10)
         
         # Turn on for random along x axis.
         #stroke(r() * 255)
-        if i % cellSize == 0:
-            for j in range(height):
+        if int(i % cellSize) == 0:
+            for j in range(canvasSize):
                 
                 # Turn on for random everywhere.
                 #stroke(r() * 255)
-                if j % cellSize == 0:
+                if int(j % cellSize) == 0:
                     drawObject(i,j)
     
 def mousePressed():
