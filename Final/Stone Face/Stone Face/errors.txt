@@ -1,0 +1,10 @@
+﻿I'm sorry, but errors were detected in your script. Please correct the
+errors listed below, and try again.
+
+
+File "game/script.rpy", line 38: is not terminated with a newline. (Check strings and parenthesis.)
+(Perhaps you left out a " at the end of the first line.)
+        "The village card-crafter, trained in the magics of the world, knew that San Kisos had the potential to become a very powerful mage...{w=7.0}
+
+Ren'Py Version: Ren'Py 8.2.1.24030407
+Wed Apr 24 00:14:54 2024
