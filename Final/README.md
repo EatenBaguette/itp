@@ -28,6 +28,46 @@ Had to look up how to make text wait then display next line. Used extend feature
 
 Finished background and made transition to main story.
 
+Next step: finish filling in main story including what expressions. Then send the required expressions to Lex so he can draw them. Include any other needed sprites on list.
+
+While writing the story I made some filler sprites for S and C to be able to practice changing the direction they're looking. However, the sprites are too big and now I have to figure out how to crop them all the same so that they don't move around when they change facial expressions.
+I'm giving up, I'll just try to imagine it in my head while writing code. I looked up how to do it on photoshop and Lightroom, and neither of them seem to work well with exporting or bulk processing png.
+
+I had to add some back to make an animation of Coimazu running away. Currently I need to figure out how to hide an image during an animation.
+I figured out that I can use alpha 0.0 to make an image invisible even though it's still there. I changed the code to line up the images where they would appear instead of trying to move them in 0 seconds.
+
+Next I should finish copying in the intro story and setting up facial expressions. Then I should make a list of sprites I need.
+I finished the intro story and edited the fox to make the sizes of the two sprites match better.
+
+Next I should send Lex the list of sprites I need plus the context. Maybe I should record the game so he can see the context.
+
+Notes:
+The whole canvas is 1920x1080. That means each sprite should be created on a canvas that is 1080 pixels tall. If the sprite takes up that whole canvas top to bottom, that would meant that the sprite is as tall as the screen. For some reference, the placeholder san kisos sprite is 940 pixels tall from head to knee. He is about 500 pixels wide. So make sure to turn on pixel rulers when drawing so that you can match that.
+- To make it easier to draw multiple facial expressions and looking directions:
+- draw a character with their body facing straight with their head turned one way
+- copy paste canvas
+- mirror the head the other way (copy, flip paste)
+- copy canvas
+- change just the facial expression for each direction by copying the canvas and changing just facial expression to keep everything else consistent.
+
+Character general descriptions:
+San Kisos: long dark hair braids, holding obsidian knife.
+Coimazu: taller than San Kisos (maybe make his sprite 990 pixels tall, still in a 1080 tall canvas). Looks different than san kisos, more similar to Kili.
+Their father looks similar to coimazu but older, same height (990 pixels).
+
+List of needed sprites:
+Family: father looking down smiling at young san kisos and young coimazu.
+San Kisos and coimazu Neutral, happy, sad, each left and right (12 total)
+San kisos surprised left
+Kili thinking (right up)
+
+Lex made the body and one facial expression looking right and sent the Procreate file. I separated the head and body and made the other expressions, then flipped the head to make the other direction sprites.
+
+
+Next I'll make a background for the village level, then a quick small sprite of San Kisos. After, I'll figure out how to get the sprite to move to where the mouse is clicked.
+
+The background and sprite are made but for some reason they're not displaying after the intro section. I put them in a separate label but nothing is showing. I wonder if I have to put text for it to show? And if so how to I get it to not have to display text?
+It turns out putting "pause" requires a click to move on.
 
 
 ## References

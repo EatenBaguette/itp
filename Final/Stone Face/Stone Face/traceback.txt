@@ -1,0 +1,22 @@
+﻿I'm sorry, but an uncaught exception occurred.
+
+While running game code:
+  File "game/script.rpy", line 201, in script
+    jump village
+ScriptError: could not find label 'village'.
+
+-- Full Traceback ------------------------------------------------------------
+
+Full traceback:
+  File "game/script.rpy", line 201, in script
+    jump village
+  File "/Applications/renpy-8.2.1-sdk/renpy/ast.py", line 1698, in execute
+    rv = renpy.game.script.lookup(target)
+  File "/Applications/renpy-8.2.1-sdk/renpy/script.py", line 1103, in lookup
+    raise ScriptError("could not find label '%s'." % str(original))
+ScriptError: could not find label 'village'.
+
+macOS-10.16-x86_64-i386-64bit x86_64
+Ren'Py 8.2.1.24030407
+Stone Face 1.0
+Tue May  7 17:42:11 2024
