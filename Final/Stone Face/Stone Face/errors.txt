@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 73: end of line expected.
-    jump village level
-                 ^
+File "game/script.rpy", line 125: unexpected indent
+                renpy.redraw(self, 0)
+                ^
 
 Ren'Py Version: Ren'Py 8.2.1.24030407
-Tue May  7 17:40:11 2024
+Thu May  9 13:25:08 2024

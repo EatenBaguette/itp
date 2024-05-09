@@ -64,20 +64,94 @@ image coimazu_kisos_move:
         linear 3.0 xalign 1.0
         alpha 0.0
 
+init python:
+
+    class LevelDisplayable(renpy.Displayable):
+
+        def __init__(self, **kwargs):
+
+            super(LevelDisplayable, self).__init__(**kwargs)
+
+            # Sizes
+            self.SANSPRITE_WIDTH = 92
+            self.SANSPRITE_HEIGHT = 163
+            self.screenheight = 1080
+            self.screenwidth = 1920
+
+            # Displayables
+            self.sansprite = Image("San Sprite.png")
+
+            # If San Sprite is in range of a wigwam
+            self.wigwam = False
+
+            # The position and speed of sansprite
+            self.sanspritey = (self.screenheight/2)
+            self.sanspritex = (self.screenwidth/4)
+            self.sanspritespeed = 250.0
+
+            # The target position of where the mouse was pressed
+            self.targety = int((self.screenheight/2.01))
+            self.targetx = int((self.screenwidth/4.01))
+
+            # time of the past render frame
+            self.oldst = None
+
+        def visit(self):
+             return [ self.sansprite ]
+
+
+        def render(self, width, height, st, at):
+
+            # The render object being drawn into
+            render = renpy.Render(1920, 1080)
+
+            # Figure out the time elapsed since the previous frame.
+            if self.oldst is None:
+                self.oldst = st
+
+            dtime = st - self.oldst
+            self.oldst = st
+
+            # Moves sansprite
+            speed = dtime * self.sanspritespeed
+            self.sanspritey += speed * (self.targety - self.sanspritey - self.SANSPRITE_HEIGHT/2) / abs(self.targety - self.sanspritey - self.SANSPRITE_HEIGHT/2)
+            self.sanspritex += speed * (self.targetx - self.sanspritex - self.SANSPRITE_WIDTH/2) / abs(self.targetx - self.sanspritex - self.SANSPRITE_WIDTH/2)
+
+            # draws sansprite
+            sansprite_render = renpy.render(self.sansprite, 1920, 1080, st, at)
+            render.blit(sansprite_render, (int(self.sanspritex), int(self.sanspritey)))
+
+            # Re render quickly in order to show the next frame to make movement smooth
+            renpy.redraw(self, 0)
+
+            # return Render
+            return render
+
+        def event(self, ev, x, y, st):
+
+            import pygame
+
+            # Mousebutton down == set the targetx and targety
+            if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
+                self.targetx = x
+                self.targety = y
+
+                # Update the scren
+                renpy.restart_interaction()
 
 # The game starts here.
 
+#label start:
+    #menu:
+        #"Where to?"
+        #"Village Level":
+            #jump start_village_level
+
+        #"Intro":
+            #jump intro
+
+
 label start:
-    menu:
-        "Where to?"
-        "Village Level":
-            jump village_level
-
-        "Intro":
-            jump intro
-
-
-label intro:
     scene bg alcove
     show young san kisos
     with dissolve
@@ -157,6 +231,7 @@ label bad_news:
     k "I... I don't think so."
 
     show san sad
+    show coimazu sad
     c "I'm going then!"
 
     hide san
@@ -176,7 +251,7 @@ and you’re gone, or what if you get hurt too? Let me go."
 
     hide coimazu_kisos_move
     show san kisos left sad at right
-    show coimazu sad at center behind kili:
+    show coimazu neutral left at center behind kili:
         pause 1.0
         linear 1.0 xalign -1.0
     c "I understand."
@@ -184,7 +259,7 @@ and you’re gone, or what if you get hurt too? Let me go."
     k "He... He was turned to stone."
 
     show san surprised
-    show kili thinking
+    show kili thinking at left, kili
     k "We didn’t remember what happened, just woke up feeling not
 ourselves, and Ikidod was a statue."
 
@@ -199,11 +274,18 @@ something to do with the Itikandu."
 
     show san right at offscreenright with move
 
-    jump village_level
+screen village_level():
 
-label village_level:
-    scene bg village level
-    show san sprite:
-        xalign 0.25
-        yalign 0.50
-    pause
+    default village_level = LevelDisplayable()
+
+    add "bg village level"
+
+    add village_level
+
+label start_village_level:
+
+    window hide
+
+    call screen village_level
+
+    window show

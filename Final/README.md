@@ -69,6 +69,273 @@ Next I'll make a background for the village level, then a quick small sprite of 
 The background and sprite are made but for some reason they're not displaying after the intro section. I put them in a separate label but nothing is showing. I wonder if I have to put text for it to show? And if so how to I get it to not have to display text?
 It turns out putting "pause" requires a click to move on.
 
+Some pseudocode for how I want to make the 2d levels.
+Make a new class called level.
+Setting attributes of the class: each instance of is based on where in the game the level is. So location should be a parameter in `def __init__()`
+It's also a class based on a base class in renpy, `renpy.displayable` so it needs that notation. When instantiated, it needs to also instantiate itself in renpy. So add that line.
+
+I need it to display the correct background. 
+
+Oh ok, I found the section in the renpy documentation that goes over creator defined displayable. This will make this so much easier (probably not but still more helpful than just looking at the pong reference). So I basically need to read through this, figure out which functions I need to define, then do it. The result is underneath this text block.
+
+Things I definitely need and why:
+
+def__init__(): adds attributes to this instance.
+
+def render(self, width, height, st, at): tells renpy what to show on the screen and for how long / some physics.
+
+def event(self, ev, x, y, st): I will import pygame to this to track where the mouse clicks to control where the sprite moves.
+
+def visit(self): I need this because I'm using a child displayable (San Kisos Sprite) in the main displayable (the scene/level).
+
+renpy.redraw(displayable, when): when to redraw a displayable. I might not need this since this will be a mostly static displayable until the sprite moves, which will redraw without this method.
+
+raise renpy.IgnoreEvent(): for ignoring an event under the event function. Used in an if for whether to switch to inside a wigwam or not.
+
+I could add a class wide attribute that defines an array of information about various locations to automatically load it based on the location.
+
+
+
+First draft:
+```python
+class LevelDisplayable(renpy.Displayable):
+    
+    def __init__(self, location):
+        
+        renpy.Displayable.__init__(self)
+        
+        self.location = location
+        
+        # Sizes
+        self.SANSPRITE_WIDTH = 92
+        self.SANSPRITE_HEIGHT = 163
+        
+        
+        # Displayables
+        self.sansprite = Image("San Sprite.png")
+        
+        
+        # If San Sprite is in range of a wigwam
+        self.wigwam = False
+        
+    # Not sure if I need this, maybe it's a renpy attribute?
+    def visit(self):
+        return [ self.paddle, self.ball ]
+```
+
+Second draft: I followed along the example in the renpy documentation and looked at the definitions on [that page](https://www.renpy.org/doc/html/cdd.html). I also borrowed heavily from the pong example in the renpy tutorial for the physics equations. The issues with this draft (some of them were fixed before I remembered to paste here): `def __init__(self, location)` the location was never referenced and I deleted it; I thought that width and height worked as the project width and height which wasn't true so I added attributes called screenwidth and screenheight; I changed the `__init__` to 
+```python
+def __init__(self, **kwargs):
+    super(LevelDisplayable, self).__init__(**kwargs)
+```
+as per the documentation example. It seems to have moved on to a new error so it probably helped; I changed the starting `targetx` and `targety` to 0 because `None` doesn't work to start; I misspelled the bool true; an error that says render not implemented when rendering sansprite. After looking around I tried changing `self.sansprite = renpy.Displayable("San Sprite.png")` to `self.sansprite = Image("San Sprite.png")` and it moved on to the next error so I assume this fixed that bug; sanspritex is not defined because I was supposed to type self.sanspritex; Oh yay! It "works" now. It's pretty janky though. 
+
+Things I know I need to fix off the top of my head: 
+- I need to set the default targetx and targety to the same spot as the default sanspritex and y so it doesn't start moving right when displaying the screen. Oh except that means it divides by zero...
+- I need to only update the frames after clicking so that the sprite doesn't vibrate.
+- I need to combine moving the sprite into one line so that it doesn't move by x and then y
+
+This is draft 2.0 before some of the edits just listed:
+```python
+
+init python:
+
+    class LevelDisplayable(renpy.Displayable):
+
+        def __init__(self):
+
+            # Sizes
+            self.SANSPRITE_WIDTH = 92
+            self.SANSPRITE_HEIGHT = 163
+            self.screenheight = 1080
+            self.screenwidth = 1920
+
+            # Displayables
+            self.sansprite = renpy.Displayable("San Sprite.png")
+
+            # If San Sprite is in range of a wigwam
+            self.wigwam = False
+
+            # The position and speed of sansprite
+            self.sanspritey = (self.screenheight/2)
+            self.sanspritex = (self.screenwidth/2)
+            self.sanspritespeed = 200.0
+
+            # The target position of where the mouse was pressed
+            self.targety = None
+            self.targetx = None
+
+            # time of the past render frame
+            self.oldst = None
+
+        def visit(self):
+             return [ self.sansprite ]
+
+
+        def render(self, width, height, st, at):
+
+            # The render object being drawn into
+            render = renpy.Render(width, height)
+
+            # Figure out the time elapsed since the previous frame.
+            if self.oldst is None:
+                self.oldst = st
+
+            dtime = st - self.oldst
+            self.oldst = st
+
+            # Moves sansprite
+            speed = dtime * self.sanspritespeed
+            self.sanspritey += speed * (self.targety - self.sanspritey) / abs(self.targety - self.sanspritey)
+            self.sanspritex += speed * (self.targetx - self.sanspritex) / abs(self.targetx - self.sanspritex)
+
+            # draws sansprite
+            sansprite_render = renpy.render(self.sansprite, width, height, st, at)
+            render.blit(sansprite_render, (int(sanspritex), int(sanspritey)))
+
+            # Re render quickly in order to show the next frame to make movement smooth
+            renpy.redraw(self, 0)
+
+            # return Render
+            return render
+
+        def event(self, ev, x, y, st):
+
+            import pygame
+
+            # Mousebutton down == set the targetx and targety
+            if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
+                self.targetx = x
+                self.targety = y
+
+                # Update the scren
+                renpy.restart_interaction()
+                
+                
+screen village_level():
+
+    default village_level = LevelDisplayable()
+
+    add "bg village level"
+
+    add village_level
+
+label start_village_level:
+
+    window hide # to hide the window and quick menu while in village_level
+    $ quick_menu = False
+
+    call screen village_level
+
+    $ quick_menu = true
+    window show
+```
+
+Draft 2.1
+
+```python
+
+init python:
+
+    class LevelDisplayable(renpy.Displayable):
+
+        def __init__(self, **kwargs):
+
+            super(LevelDisplayable, self).__init__(**kwargs)
+
+            # Sizes
+            self.SANSPRITE_WIDTH = 92
+            self.SANSPRITE_HEIGHT = 163
+            self.screenheight = 1080
+            self.screenwidth = 1920
+
+            # Displayables
+            self.sansprite = Image("San Sprite.png")
+
+            # If San Sprite is in range of a wigwam
+            self.wigwam = False
+
+            # The position and speed of sansprite
+            self.sanspritey = (self.screenheight/2)
+            self.sanspritex = (self.screenwidth/4)
+            self.sanspritespeed = 200.0
+
+            # The target position of where the mouse was pressed
+            self.targety = 0.0
+            self.targetx = 0.0
+
+            # time of the past render frame
+            self.oldst = None
+
+        def visit(self):
+             return [ self.sansprite ]
+
+
+        def render(self, width, height, st, at):
+
+            # The render object being drawn into
+            render = renpy.Render(1920, 1080)
+
+            # Figure out the time elapsed since the previous frame.
+            if self.oldst is None:
+                self.oldst = st
+
+            dtime = st - self.oldst
+            self.oldst = st
+
+            # Moves sansprite
+            speed = dtime * self.sanspritespeed
+            self.sanspritey += speed * (self.targety - self.sanspritey) / abs(self.targety - self.sanspritey)
+            self.sanspritex += speed * (self.targetx - self.sanspritex) / abs(self.targetx - self.sanspritex)
+
+            # draws sansprite
+            sansprite_render = renpy.render(self.sansprite, 1920, 1080, st, at)
+            render.blit(sansprite_render, (int(self.sanspritex), int(self.sanspritey)))
+
+            # Re render quickly in order to show the next frame to make movement smooth
+            renpy.redraw(self, 0)
+
+            # return Render
+            return render
+
+        def event(self, ev, x, y, st):
+
+            import pygame
+
+            # Mousebutton down == set the targetx and targety
+            if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
+                self.targetx = x
+                self.targety = y
+
+                # Update the scren
+                renpy.restart_interaction()
+
+screen village_level():
+
+    default village_level = LevelDisplayable()
+
+    add "bg village level"
+
+    add village_level
+
+label start_village_level:
+
+    call screen village_level
+
+```
+
+
+Draft 3
+
+Things I know I need to fix off the top of my head: 
+- I need to set the default targetx and targety to the same spot as the default sanspritex and y so it doesn't start moving right when displaying the screen. Oh except that means it divides by zero...
+- I need to only update the frames after clicking so that the sprite doesn't vibrate.
+- I need to combine moving the sprite into one line so that it doesn't move by x and then y
+
+To make it only update while moving I can check if its position is different than the target position maybe.
+
+I wish I was less tired. I think I could use my knowledge of calculus but I'm too tired to remember the right steps to solve these problems.
+
 
 ## References
 
@@ -263,7 +530,7 @@ init python:
             y = min(y, self.COURT_BOTTOM)
             self.playery = y
 
-            # If we have a winner, return him or her. Otherwise, ignore
+            # If we have a winner, return them. Otherwise, ignore
             # the current event.
             if self.winner:
                 return self.winner
